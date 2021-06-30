@@ -9,6 +9,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<Datum> _product;
+  List<Datum> _filterProducts = List();
   bool _loading;
   @override
   void initState() {
@@ -17,6 +18,7 @@ class _HomeState extends State<Home> {
     Service.getProducts().then((prodcuts) {
       setState(() {
         _product = prodcuts;
+        _filterProducts = _product;
         _loading = false;
       });
     });
@@ -31,34 +33,53 @@ class _HomeState extends State<Home> {
           _loading ? 'Loading...' : 'Hashlob-Products',
         ),
       ),
-      body: Container(
-        color: Colors.white,
-        child: ListView.builder(
-          itemBuilder: (context, index) {
-            Datum product = _product[index];
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.name,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      body: Column(
+        children: [
+          TextField(
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(10),
+              hintText: "Search",
+            ),
+            onChanged: (value) {
+              setState(() {
+                _filterProducts = _product.where((element) {
+                  return element.name
+                          .toLowerCase()
+                          .contains(value.toLowerCase()) ||
+                      element.price.contains(value);
+                }).toList();
+              });
+            },
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                Datum product = _filterProducts[index];
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product.name,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'Price: ${product.price}',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
                     ),
-                    Text(
-                      'Price: ${product.price}',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-          itemCount: null == _product ? 0 : _product.length,
-        ),
+                  ),
+                );
+              },
+              itemCount: null == _filterProducts ? 0 : _filterProducts.length,
+            ),
+          ),
+        ],
       ),
     );
   }
