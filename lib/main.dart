@@ -42,9 +42,13 @@ class _HashlobState extends State<Hashlob> {
           Home((selectedPro) {
             setState(() {
               cart.add(selectedPro);
+              sum = 0;
+              cart.forEach((element) {
+                sum = sum + int.parse(element.price);
+              });
             });
           }),
-          Checkout(cart)
+          Checkout(cart, sum)
         ]),
       ),
     );
