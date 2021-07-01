@@ -6,28 +6,34 @@ class Checkout extends StatelessWidget {
   Checkout(this.cart, this.sum);
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Cart List',
+        ),
+      ),
+      body: Column(
         children: [
-          ListView.builder(
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  cart[index].name,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                trailing: Text(
-                  'Price: ${cart[index].price}',
-                  style: TextStyle(
-                      color: Colors.redAccent,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                ),
-              );
-            },
-            itemCount: cart.length,
-            shrinkWrap: true,
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    cart[index].name,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Text(
+                    'Price: ${cart[index].price}',
+                    style: TextStyle(
+                        color: Colors.redAccent,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                );
+              },
+              itemCount: null == cart ? 0 : cart.length,
+            ),
           ),
           Divider(
             height: 40,
