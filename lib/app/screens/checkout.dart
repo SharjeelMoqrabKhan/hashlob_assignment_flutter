@@ -38,7 +38,13 @@ class Checkout extends StatelessWidget {
           Divider(
             height: 40,
           ),
-          Text("Total Price: $sum"),
+          Text(
+            "Total Price: $sum",
+            style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic),
+          ),
         ],
       ),
     );
