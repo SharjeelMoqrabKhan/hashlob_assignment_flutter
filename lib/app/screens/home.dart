@@ -3,6 +3,8 @@ import 'package:hashlob_assignment/model/product.dart';
 import 'package:hashlob_assignment/service/service.dart';
 
 class Home extends StatefulWidget {
+  final ValueSetter<Datum> _valueSetter;
+  Home(this._valueSetter);
   @override
   _HomeState createState() => _HomeState();
 }
@@ -55,25 +57,22 @@ class _HomeState extends State<Home> {
             child: ListView.builder(
               itemBuilder: (context, index) {
                 Datum product = _filterProducts[index];
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          product.name,
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          'Price: ${product.price}',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
+                return ListTile(
+                  title: Text(
+                    product.name,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
+                  subtitle: Text("Add to cart"),
+                  trailing: Text(
+                    'Price: ${product.price}',
+                    style: TextStyle(
+                        color: Colors.redAccent,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    widget._valueSetter(_filterProducts[index]);
+                  },
                 );
               },
               itemCount: null == _filterProducts ? 0 : _filterProducts.length,
